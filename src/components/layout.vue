@@ -2,7 +2,7 @@
  * @Author: anqiao 1102877041@qq.com
  * @Date: 2023-04-11 09:44:53
  * @LastEditors: anqiao 1102877041@qq.com
- * @LastEditTime: 2023-04-28 16:39:06
+ * @LastEditTime: 2023-04-28 17:22:35
  * @description: 
  * @FilePath: /AdminWork/src/components/layout.vue
 -->
@@ -99,6 +99,7 @@ const getOption = async (menu: any) => ({
     icon: await renderIcon(menu.icon),
 });
 async function renderIcon(icon: string) {
+    // @ts-ignore
     const { [icon]: iconComp } = await import("@vicons/antd");
     return () => h(NIcon, null, { default: () => h(iconComp) });
 }

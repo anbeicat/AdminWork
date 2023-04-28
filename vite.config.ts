@@ -2,7 +2,7 @@
  * @Author: anqiao 1102877041@qq.com
  * @Date: 2023-03-31 17:07:58
  * @LastEditors: anqiao 1102877041@qq.com
- * @LastEditTime: 2023-04-11 09:26:15
+ * @LastEditTime: 2023-04-13 16:19:39
  * @description: 
  * @FilePath: /AdminWork/vite.config.ts
  */
@@ -16,7 +16,8 @@ export default defineConfig({
   plugins: [vue()],
   resolve: {
     alias: {
-      '@': resolve(__dirname, 'src') // 设置 `@` 指向 `src` 目录
+      '@': resolve(__dirname, 'src'), // 设置 `@` 指向 `src` 目录
+      '@@': resolve(__dirname, 'node_modules') // 设置 `@@` 指向 `node_modules` 目录
     }
   },
   base: './', // 设置打包路径
@@ -47,4 +48,12 @@ export default defineConfig({
       },
     },
   },
+  build:{
+    terserOptions: {
+        compress: {
+          drop_console: true,
+          drop_debugger: true
+        }
+    }
+  }
 })

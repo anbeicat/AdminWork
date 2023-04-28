@@ -1,37 +1,44 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { useLocalStorage } from '@vueuse/core'
+import { ref, onMounted, computed } from 'vue'
+import layout from './components/layout.vue'
+import { NConfigProvider, GlobalThemeOverrides, darkTheme, zhCN, dateZhCN, NGlobalStyle, useThemeVars, NEl } from 'naive-ui'
 import { useDefaultStore } from "./store/defaultSettings"
+import { theme } from "./theme/index"
 const defaultStore = useDefaultStore()
-// import { dynamicRoutes, dynamicButtons } from '../services/user';
-// onMounted(() => {
-//   if (!useLocalStorage('routes', null).value) {
-//     dynamicRoutes().then((result: any) => {
-//       useLocalStorage('routes',result)
-//     })
-//     dynamicButtons().then((result: any) => {
-//       useLocalStorage('buttons',result)
-//     })
+// let themeOverrides: GlobalThemeOverrides = {
+//   // common: theme,
+//   common: {
+//     primaryColor: defaultStore.primaryColor
+//   },
+//   Button: {
+//     // textColor: '#FF0000'
 //   }
-// })
+// }
+// const themeVars= useThemeVars()
 
+const themeOverrides = computed(() => {
+  return {
+    common: {
+      primaryColor: defaultStore.primaryColor,
+      primaryColorHover: defaultStore.primaryColor,
+    }
+  }
+})
 </script>
 
 <template>
-  <div id="app" :class="defaultStore.theme ? 'bgc-eef2f5' : 'bgc'">
-    <!-- <a-spin :loading="defaultStore.loading" dot> -->
-      <router-view></router-view>
-    <!-- </a-spin> -->
-  </div>
+  <!-- <div id="app" :class="defaultStore.theme ? 'bgc-eef2f5' : 'bgc'"> -->
+  <n-config-provider :theme-overrides="themeOverrides" class="bgc"
+    :theme="defaultStore.theme === 'light' ? undefined : darkTheme" :locale="zhCN" :date-locale="dateZhCN"
+    inline-theme-disabled>
+    <router-view></router-view>
+    <n-global-style />
+  </n-config-provider>
+  <!-- </div> -->
 </template>
 
 <style lang="less" scoped>
-:deep.arco-spin {
+.bgc {
   width: 100%;
   height: 100%;
-}
-
-.bgc {
-  background-color: var(--color-bg-1);
-}
-</style>
+}</style>

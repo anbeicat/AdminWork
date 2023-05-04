@@ -2,7 +2,7 @@
  * @Author: anqiao 1102877041@qq.com
  * @Date: 2023-03-31 17:07:58
  * @LastEditors: anqiao 1102877041@qq.com
- * @LastEditTime: 2023-04-13 16:19:39
+ * @LastEditTime: 2023-05-04 09:30:56
  * @description: 
  * @FilePath: /AdminWork/vite.config.ts
  */
@@ -48,12 +48,36 @@ export default defineConfig({
       },
     },
   },
-  build:{
+  build: {
+    sourcemap: false,
+    minify: 'terser',
+    chunkSizeWarningLimit: 1500,
     terserOptions: {
-        compress: {
-          drop_console: true,
-          drop_debugger: true
+      compress: {
+        drop_console: true,
+        drop_debugger: true
+      }
+    },
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            return id
+              .toString()
+              .split('node_modules/')[1]
+              .split('/')[0]
+              .toString();
+          }
+        },
+        chunkFileNames: (chunkInfo) => {
+          const facadeModuleId = chunkInfo.facadeModuleId
+            ? chunkInfo.facadeModuleId.split('/')
+            : [];
+          const fileName =
+            facadeModuleId[facadeModuleId.length - 2] || '[name]';
+          return `js/${fileName}/[name].[hash].js`;
         }
+      }
     }
   }
 })

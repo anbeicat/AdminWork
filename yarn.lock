@@ -1492,10 +1492,10 @@
     "serialize-javascript" "^6.0.1"
     "terser" "^5.16.5"
 
-"terser@^5.16.5", "terser@^5.4.0":
-  "integrity" "sha512-HPa/FdTB9XGI2H1/keLFZHxl6WNvAI4YalHGtDQTlMnJcoqSab1UwL4l1hGEhs6/GmLHBZIg/YgB++jcbzoOEg=="
-  "resolved" "https://registry.npmjs.org/terser/-/terser-5.16.9.tgz"
-  "version" "5.16.9"
+"terser@^5.16.5", "terser@^5.17.1", "terser@^5.4.0":
+  "integrity" "sha512-hVl35zClmpisy6oaoKALOpS0rDYLxRFLHhRuDlEGTKey9qHjS1w9GMORjuwIMt70Wan4lwsLYyWDVnWgF+KUEw=="
+  "resolved" "https://registry.npmjs.org/terser/-/terser-5.17.1.tgz"
+  "version" "5.17.1"
   dependencies:
     "@jridgewell/source-map" "^0.3.2"
     "acorn" "^8.5.0"

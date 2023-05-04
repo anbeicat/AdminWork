@@ -2,7 +2,7 @@
  * @Author: anqiao 1102877041@qq.com
  * @Date: 2023-03-02 11:23:52
  * @LastEditors: anqiao 1102877041@qq.com
- * @LastEditTime: 2023-04-28 11:43:53
+ * @LastEditTime: 2023-05-04 09:40:44
  * @description:
  * @FilePath: /AdminWork/src/main.ts
  */
@@ -29,7 +29,7 @@ app.use(router)
 app.config.globalProperties.axios = 'axios';
 router.beforeEach(async (to, from, next) => {
     console.log('ttoto', to);
-    if (to.path === '/') {
+    if (to.path === '/' || to.path === '/index') {
         next({ name: 'home' })
     }
     next()

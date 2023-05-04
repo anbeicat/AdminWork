@@ -2,7 +2,7 @@
  * @Author: anqiao 1102877041@qq.com
  * @Date: 2023-03-02 11:23:52
  * @LastEditors: anqiao 1102877041@qq.com
- * @LastEditTime: 2023-05-04 11:27:22
+ * @LastEditTime: 2023-05-04 13:19:34
  * @description:
  * @FilePath: /AdminWork/src/main.ts
  */
@@ -36,7 +36,7 @@ router.beforeEach(async (to, from, next) => {
 })
 const defaultStore = useDefaultStore()
 
-localStorage['userInfo'] = localStorage['userInfo'] || JSON.stringify(defaultStore)
+// localStorage['userInfo'] = localStorage['userInfo'] || JSON.stringify(defaultStore)
 console.log('defaultStore',defaultStore,localStorage['userInfo']);
 
 // 挂载实例

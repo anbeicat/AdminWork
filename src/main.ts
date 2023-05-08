@@ -2,7 +2,7 @@
  * @Author: anqiao 1102877041@qq.com
  * @Date: 2023-03-02 11:23:52
  * @LastEditors: anqiao 1102877041@qq.com
- * @LastEditTime: 2023-05-08 14:01:22
+ * @LastEditTime: 2023-05-08 15:00:12
  * @description:
  * @FilePath: /AdminWork/src/main.ts
  */
@@ -25,10 +25,6 @@ const app = createApp(App)
 
 // 挂载pinia
 app.use(store)
-
-const defaultStore = useDefaultStore()
-localStorage.setItem('userInfo', localStorage.getItem('userInfo') || JSON.stringify(defaultStore))
-
 app.use(router)
 app.config.globalProperties.axios = 'axios';
 router.beforeEach(async (to, from, next) => {
@@ -38,6 +34,8 @@ router.beforeEach(async (to, from, next) => {
     }
     next()
 })
+const defaultStore = useDefaultStore()
+localStorage.setItem('userInfo', JSON.stringify(localStorage.getItem('userInfo')) || JSON.stringify(defaultStore))
 // localStorage['userInfo'] = localStorage['userInfo'] || JSON.stringify(defaultStore)
 console.log('defaultStore',defaultStore,localStorage.getItem('userInfo'));
 

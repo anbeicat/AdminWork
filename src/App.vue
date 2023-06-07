@@ -1,20 +1,18 @@
+<!--
+ * @Author: anqiao 1102877041@qq.com
+ * @Date: 2023-03-31 17:07:58
+ * @LastEditors: anqiao 1102877041@qq.com
+ * @LastEditTime: 2023-06-07 10:45:09
+ * @description: 
+ * @FilePath: /AdminWork/src/App.vue
+-->
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, reactive } from 'vue'
 import layout from './components/layout.vue'
-import { NConfigProvider, GlobalThemeOverrides, darkTheme, zhCN, dateZhCN, NGlobalStyle, useThemeVars, NEl } from 'naive-ui'
+import { NConfigProvider, GlobalThemeOverrides, darkTheme, zhCN, dateZhCN, NGlobalStyle, useThemeVars, NEl, NMessageProvider } from 'naive-ui'
 import { useDefaultStore } from "./store/defaultSettings"
 import { theme } from "./theme/index"
 const defaultStore = useDefaultStore()
-// let themeOverrides: GlobalThemeOverrides = {
-//   // common: theme,
-//   common: {
-//     primaryColor: defaultStore.primaryColor
-//   },
-//   Button: {
-//     // textColor: '#FF0000'
-//   }
-// }
-// const themeVars= useThemeVars()
 
 const themeOverrides = computed(() => {
   return {
@@ -28,10 +26,12 @@ const themeOverrides = computed(() => {
 
 <template>
   <!-- <div id="app" :class="defaultStore.theme ? 'bgc-eef2f5' : 'bgc'"> -->
-  <n-config-provider :theme-overrides="themeOverrides" class="bgc"
+  <n-config-provider id="app" :theme-overrides="themeOverrides" :class="['bgc', defaultStore.isGray ? 'isGray' : '']"
     :theme="defaultStore.theme === 'light' ? undefined : darkTheme" :locale="zhCN" :date-locale="dateZhCN"
     inline-theme-disabled>
-    <router-view></router-view>
+    <n-message-provider>
+      <router-view></router-view>
+    </n-message-provider>
     <n-global-style />
   </n-config-provider>
   <!-- </div> -->
@@ -41,4 +41,22 @@ const themeOverrides = computed(() => {
 .bgc {
   width: 100%;
   height: 100%;
-}</style>
+}
+
+.isGray {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
+  -webkit-filter: grayscale(100%);
+
+}
+</style>
+
+<style lang="scss">
+// 修改scss变量
+// $vxe-font-size: 14px;
+// $vxe-font-color: #666;
+// $vxe-primary-color: v-bind(primaryColor);
+// $vxe-table-font-color: $vxe-font-color;
+// $vxe-table-border-color: #e8eaec;
+// $vxe-table-border-radius: 4px;
+@import 'vxe-table/styles/index.scss';
+</style>

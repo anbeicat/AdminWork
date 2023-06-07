@@ -2,7 +2,7 @@
  * @Author: anqiao 1102877041@qq.com
  * @Date: 2023-03-07 09:54:35
  * @LastEditors: anqiao 1102877041@qq.com
- * @LastEditTime: 2023-04-28 15:20:12
+ * @LastEditTime: 2023-06-01 10:33:04
  * @description:
  * @FilePath: /AdminWork/src/store/defaultSettings.ts
  */
@@ -37,8 +37,12 @@ export const useDefaultStore = defineStore('main', {
     }
   }),
   actions: {
-    changeType(type:string, value: any) {
-      this[type] = value
+    changeType(value: boolean | string | number,typeName:string) {
+      this[typeName] = value
+      localStorage['userInfo']=JSON.stringify(useDefaultStore().$state)
+    },
+    changeActionBar(value: any,typeName:string) {
+      this.actionBar[typeName] = value
       localStorage['userInfo']=JSON.stringify(useDefaultStore().$state)
     }
   },

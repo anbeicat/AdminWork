@@ -2,11 +2,12 @@
  * @Author: anqiao 1102877041@qq.com
  * @Date: 2023-03-02 11:23:52
  * @LastEditors: anqiao 1102877041@qq.com
- * @LastEditTime: 2023-05-08 15:00:12
+ * @LastEditTime: 2023-06-07 11:14:00
  * @description:
  * @FilePath: /AdminWork/src/main.ts
  */
 import { createApp } from 'vue'
+import VXETable from 'vxe-table'
 // 通用字体
 import 'vfonts/Lato.css'
 // 等宽字体
@@ -18,6 +19,8 @@ import App from './App.vue'
 import router from './router/index'
 import store from './store'
 import { useDefaultStore } from "./store/defaultSettings"
+import { createDiscreteApi } from 'naive-ui'
+const { loadingBar } = createDiscreteApi(['loadingBar'])
 // 创建vue实例
 const app = createApp(App)
 
@@ -26,18 +29,27 @@ const app = createApp(App)
 // 挂载pinia
 app.use(store)
 app.use(router)
+app.use(VXETable)
 app.config.globalProperties.axios = 'axios';
 router.beforeEach(async (to, from, next) => {
-    console.log('ttoto', to);
+    loadingBar.start()
+    console.log('ttoto', to, from);
     if (to.path === '/') {
         next({ name: 'home' })
     }
     next()
 })
+
+router.afterEach((to, from) => {
+    // if (to.fullPath.split('/')[1] === 'redirect') {
+    //     router.push(to.fullPath.replace('/redirect', ''))
+    // }
+    loadingBar.finish()
+})
 const defaultStore = useDefaultStore()
-localStorage.setItem('userInfo', JSON.stringify(localStorage.getItem('userInfo')) || JSON.stringify(defaultStore))
+// localStorage.removeItem('userInfo')
+localStorage.setItem('userInfo', localStorage.getItem('userInfo') ? localStorage.getItem('userInfo') : JSON.stringify(defaultStore))
 // localStorage['userInfo'] = localStorage['userInfo'] || JSON.stringify(defaultStore)
-console.log('defaultStore',defaultStore,localStorage.getItem('userInfo'));
 
 // 挂载实例
 app.mount('#app');

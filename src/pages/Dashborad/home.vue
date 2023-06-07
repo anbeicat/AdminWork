@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { ref, reactive, onBeforeMount, onMounted, h } from 'vue'
+import { useDefaultStore } from "../../store/defaultSettings"
+const defaultStore = useDefaultStore()
 
 </script>
 
 <template>
 <div>
-    123123
+    {{ defaultStore.theme }}
 </div>
 </template>
 

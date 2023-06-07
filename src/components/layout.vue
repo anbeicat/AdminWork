@@ -2,19 +2,29 @@
  * @Author: anqiao 1102877041@qq.com
  * @Date: 2023-04-11 09:44:53
  * @LastEditors: anqiao 1102877041@qq.com
- * @LastEditTime: 2023-04-28 17:22:35
+ * @LastEditTime: 2023-06-07 11:15:25
+ * @description: 
+ * @FilePath: /AdminWork/src/components/layout.vue
+-->
+<!--
+ * @Author: anqiao 1102877041@qq.com
+ * @Date: 2023-04-11 09:44:53
+ * @LastEditors: anqiao 1102877041@qq.com
+ * @LastEditTime: 2023-06-02 14:40:23
  * @description: 
  * @FilePath: /AdminWork/src/components/layout.vue
 -->
 <script setup lang="ts">
-import { ref, reactive, onBeforeMount, onMounted, h, Component, computed } from 'vue'
-import { RouterLink } from 'vue-router'
+import { ref, reactive, onBeforeMount, onMounted, h, Component, computed, nextTick } from 'vue'
+import { RouterLink, useRouter } from 'vue-router'
 import router from '../router/index';
-import { NLayout, NLayoutSider, NLayoutHeader, NLayoutContent, NEl, NCard, NIcon, NSpace, NDropdown, NBreadcrumbItem, NBreadcrumb, NButton, NAvatar, NTag, NScrollbar, NBadge, NMenu, NDrawer, NDrawerContent, NDivider, NGrid, NGi, NInputNumber, NSwitch, NColorPicker } from 'naive-ui'
-import { MenuFoldOutlined, MenuUnfoldOutlined, DownOutlined, SearchOutlined, SettingOutlined, FullscreenOutlined, ReloadOutlined, BellOutlined, TranslationOutlined, CaretDownOutlined, CaretUpOutlined, LeftOutlined, RightOutlined, MenuOutlined, CloseCircleOutlined, CloseOutlined } from '@vicons/antd'
+import { NLayout, NLayoutSider, NLayoutHeader, NLayoutContent, NEl, NCard, NIcon, NSpace, NDropdown, NBreadcrumbItem, NBreadcrumb, NButton, NAvatar, NTag, NScrollbar, NBadge, NMenu, NDrawer, NDrawerContent, NDivider, NGrid, NGi, NInputNumber, NSwitch, NColorPicker, NInput, NWatermark } from 'naive-ui'
+import { MenuFoldOutlined, MenuUnfoldOutlined, DownOutlined, SearchOutlined, SettingOutlined, FullscreenOutlined, ReloadOutlined, BellOutlined, TranslationOutlined, CaretDownOutlined, CaretUpOutlined, LeftOutlined, RightOutlined, MenuOutlined, CloseCircleOutlined, CloseOutlined, SmileOutlined } from '@vicons/antd'
 import { useDefaultStore } from "../store/defaultSettings"
 const defaultStore = useDefaultStore()
 defaultStore.$state = JSON.parse(localStorage['userInfo'])
+
+// 变量
 const routes = ref(router.options.routes[0].children)
 
 const showCaretDown = ref(true)
@@ -40,6 +50,14 @@ const TranslationList = ref([{
     label: '英文',
     key: 2
 }])
+const ManagerList = ref([{
+    label: '个人中心',
+    key: 1
+},
+{
+    label: '退出登录',
+    key: 2
+}])
 const MenuOutlinedList = ref([{
     label: '刷新页面',
     key: 1,
@@ -59,7 +77,15 @@ const MenuOutlinedList = ref([{
     },
 }])
 
+let RefreshKey = ref(new Date().getTime())
+
+const expandedKeys = ref(['index'])
+const menuValue = ref('home')
+
+// 生命周期
 onMounted(async () => {
+    expandedKeys.value = [location.pathname.split('/')[1]]
+    menuValue.value = location.pathname.split('/')[location.pathname.split('/').length-1]
     let data: any = routes.value
     console.log('data', data);
 
@@ -78,10 +104,14 @@ onMounted(async () => {
         })
     );
 })
+
+
 // computed
 const bgc = computed(() => {
     return defaultStore.theme === 'light' ? '#f0f2f5' : '#333'
 })
+
+
 // methods
 const mouse = (isShow: boolean) => {
     showCaretDown.value = isShow
@@ -91,11 +121,12 @@ const getOption = async (menu: any) => ({
         menu.name ? h(
             RouterLink,
             {
-                to: menu.name,
+                to: menu.path,
             },
             { default: () => menu.label }
         ) : menu.label,
     key: menu.key,
+    parentKey: menu.parentKey,
     icon: await renderIcon(menu.icon),
 });
 async function renderIcon(icon: string) {
@@ -104,18 +135,35 @@ async function renderIcon(icon: string) {
     return () => h(NIcon, null, { default: () => h(iconComp) });
 }
 
-const handleChangeTheme = (type: string, value: any) => {
-    defaultStore.changeType(type, value)
+const handleChangeTheme = ( value: any,type: string,) => {
+    defaultStore.changeType( value,type)
 }
-const handleSideWidth = (value: number) => {
-    defaultStore.changeType('sideWidth', value)
+const handleDefaultSetting = (value: boolean | string | number, typeName: string) => {
+    defaultStore.changeType(value, typeName)
 }
-const handleAccordionMenu = (value: boolean) => {
-    defaultStore.changeType('accordionMenu', value)
+const handleActionBar = (value: boolean, actionBarName: string) => {
+    defaultStore.changeActionBar(value, actionBarName)
 }
-
-const handlePrimaryColor = (value: string) => {
-    defaultStore.changeType('primaryColor', value)
+// 全屏
+const handleFullScreen = () => {
+    let element = document.documentElement
+    if (document.fullscreenElement) {
+        document.exitFullscreen()
+    } else {
+        element.requestFullscreen()
+    }
+}
+// 刷新页面
+const handleRefresh = () => {
+    // const fullPath=router.currentRoute.value.fullPath
+    // router.push(`/redirect${fullPath}`)
+    RefreshKey.value = new Date().getTime()
+}
+const handleChangeMenu=(key:string,item:any)=>{
+    menuValue.value = key
+}
+const handleChangeMenuKeys=(key:string[])=>{
+    expandedKeys.value = key
 }
 </script>
 
@@ -125,14 +173,17 @@ const handlePrimaryColor = (value: string) => {
         <n-layout-sider :collapsed="showCollapsed" class="layout-sider" collapse-mode="width" :collapsed-width="65"
             :width="defaultStore.sideWidth" bordered>
             <n-el class="logo-wrapper">
-                <img src="../assets/vue.svg" alt="logo">
+                <img src="../assets/WechatIMG46.jpeg" alt="logo">
                 <div :class="showCollapsed ? 'close-title' : 'show-title'">
                     <span>Admin Work Pro</span>
                 </div>
             </n-el>
             <!-- 菜单 -->
-            <n-menu :options="menuOptions" :default-expanded-keys="['index']" default-value="home" @update:value="() => { }"
-                :accordion="defaultStore.accordionMenu" />
+            <n-menu :options="menuOptions" :expanded-keys="expandedKeys" :value="menuValue" @update:value="(key: string, item: any) => {
+                handleChangeMenu(key,item)
+            }" @update:expanded-keys="(key: string[]) => {
+                handleChangeMenuKeys(key)
+            }" :accordion="defaultStore.accordionMenu" />
         </n-layout-sider>
         <!-- 主体 -->
         <n-layout class="layout">
@@ -179,37 +230,45 @@ const handlePrimaryColor = (value: string) => {
                                     </n-icon>
                                 </n-badge>
                             </n-button>
-                            <n-button text :focusable="false" v-if="defaultStore.actionBar.isShowRefresh">
+                            <n-button text :focusable="false" v-if="defaultStore.actionBar.isShowRefresh"
+                                @click="handleRefresh">
                                 <n-icon size="18">
                                     <ReloadOutlined />
                                 </n-icon>
                             </n-button>
-                        <n-button text :focusable="false" v-if="defaultStore.actionBar.isShowFullScreen">
-                            <n-icon size="18">
-                                <FullscreenOutlined />
-                            </n-icon>
-                        </n-button>
-                        <n-dropdown trigger="hover" :options="TranslationList">
-                            <n-button text :focusable="false">
+                            <n-button text :focusable="false" v-if="defaultStore.actionBar.isShowFullScreen"
+                                @click="handleFullScreen">
                                 <n-icon size="18">
-                                    <TranslationOutlined />
+                                    <FullscreenOutlined />
                                 </n-icon>
                             </n-button>
-                        </n-dropdown>
-                        <n-button text :focusable="false" @click="styleShow = true">
-                            <n-icon size="18">
-                                <SettingOutlined />
-                            </n-icon>
-                        </n-button>
+                            <n-dropdown trigger="hover" :options="TranslationList">
+                                <n-button text :focusable="false">
+                                    <n-icon size="18">
+                                        <TranslationOutlined />
+                                    </n-icon>
+                                </n-button>
+                            </n-dropdown>
+                            <n-button text :focusable="false" @click="styleShow = true">
+                                <n-icon size="18">
+                                    <SettingOutlined />
+                                </n-icon>
+                            </n-button>
 
-                        <n-dropdown trigger="hover" :options="TranslationList">
-                            <n-button text :focusable="false" @mouseenter="mouse(false)" @mouseleave='mouse(true)'>
-                                <n-avatar round :size="28" src="../../public/vite.svg" />
-                                <span style="margin-left: 6px;">超级管理员</span>
-                                <n-icon size="14">
-                                    <CaretDownOutlined class="isshowCaretDown" />
-                                </n-icon>
-                            </n-button>
+                            <n-dropdown trigger="hover" :options="ManagerList">
+                                <n-button text :focusable="false" @mouseenter="mouse(false)" @mouseleave='mouse(true)'>
+                                    <n-avatar round :size="28" src="../../src/assets/WechatIMG44.jpeg" />
+                                    <!-- <n-avatar round :size="28">
+                                        <n-icon color="#0e7a0d">
+                                            <SmileOutlined />
+                                        </n-icon> -->
+                                    <!-- </n-avatar> -->
+
+                                    <span style="margin-left: 6px;">超级管理员</span>
+                                    <n-icon size="14">
+                                        <CaretDownOutlined class="isshowCaretDown" />
+                                    </n-icon>
+                                </n-button>
                             </n-dropdown>
                         </NSpace>
                     </div>
@@ -237,8 +296,8 @@ const handlePrimaryColor = (value: string) => {
                             <n-button strong secondary size="tiny">
                                 <template #icon>
                                     <n-icon>
-                                    <MenuOutlined />
-                                </n-icon>
+                                        <MenuOutlined />
+                                    </n-icon>
                                 </template>
                                 爱在西元前
                                 <n-icon class='close-icon-item'>
@@ -265,7 +324,7 @@ const handlePrimaryColor = (value: string) => {
             <!-- 内容 -->
             <n-layout-content>
                 <n-card bordered class="main">
-                    <router-view></router-view>
+                    <router-view :key="RefreshKey"></router-view>
                 </n-card>
                 <n-card bordered class="footer">{{ defaultStore.footerTip }}</n-card>
             </n-layout-content>
@@ -279,7 +338,7 @@ const handlePrimaryColor = (value: string) => {
                 <n-divider dashed>主题设置</n-divider>
                 <n-grid :x-gap="12" :y-gap="12" :cols="2">
                     <n-gi style="text-align: center;">
-                        <div class="example-wrapper" @click="handleChangeTheme('theme', 'light')">
+                        <div class="example-wrapper" @click="handleChangeTheme('light','theme')">
                             <div class="left"></div>
                             <div class="right">
                                 <div class="right-top"></div>
@@ -291,7 +350,7 @@ const handlePrimaryColor = (value: string) => {
                     </n-gi>
                     <n-gi style="text-align: center;">
                         <div class="example-wrapper" style="background-color: rgb(0, 0, 0);"
-                            @click="handleChangeTheme('theme', 'darkTheme')">
+                            @click="handleChangeTheme('darkTheme','theme')">
                             <div class="left" style="background-color: rgb(0, 0, 0);"></div>
                             <div class="right">
                                 <div class="right-top" style="background-color: rgb(0, 0, 0);"></div>
@@ -334,12 +393,15 @@ const handlePrimaryColor = (value: string) => {
                 <n-divider dashed>菜单设置</n-divider>
                 <div class="setting-item-wrapper">
                     <span>菜单宽度</span>
-                    <n-input-number v-model:value="defaultStore.sideWidth" :min="200" :max="400" :step="10"
-                        @update:value="handleSideWidth" />
+                    <n-input-number v-model:value="defaultStore.sideWidth" :min="200" :max="400" :step="10" @update:value="(value: number) => {
+                        handleDefaultSetting(value, 'sideWidth')
+                    }" />
                 </div>
                 <div class="setting-item-wrapper">
                     <span>手风琴模式</span>
-                    <n-switch @update:value="handleAccordionMenu" :value="defaultStore.accordionMenu">
+                    <n-switch @update:value="(value: boolean) => {
+                        handleDefaultSetting(value, 'accordionMenu')
+                    }" :value="defaultStore.accordionMenu">
                         <template #checked>
                             选中
                         </template>
@@ -352,40 +414,50 @@ const handlePrimaryColor = (value: string) => {
             <div>
                 <n-divider dashed>主题色设置</n-divider>
                 <n-grid :cols="6">
-                    <n-gi @click="handleChangeTheme('primaryColor', item)" class="colorlist" v-for="item in colorList" :style="{'backgroundColor':item }">
+                    <n-gi @click="handleChangeTheme(item,'primaryColor')" class="colorlist" v-for="item in colorList"
+                        :style="{ 'backgroundColor': item }">
                         <i v-if="defaultStore.primaryColor === item" class="circle"></i>
                     </n-gi>
                 </n-grid>
-                <!-- <div class="colorlist">
-                   
-                    </div> -->
-                <n-color-picker :value="defaultStore.primaryColor" @update:value="handlePrimaryColor" />
+                <n-color-picker :value="defaultStore.primaryColor" @update:value="(value: string) => {
+                    handleDefaultSetting(value, 'primaryColor')
+                }" />
             </div>
             <div>
                 <n-divider dashed>按钮显示</n-divider>
                 <div class="setting-item-wrapper">
                     <span>固定顶部导航</span>
-                    <n-switch @update:value="handleAccordionMenu" :value="defaultStore.accordionMenu">
+                    <n-switch @update:value="(value: boolean) => {
+                        handleDefaultSetting(value, 'isFixedNavBar')
+                    }" :value="defaultStore.isFixedNavBar">
                     </n-switch>
                 </div>
                 <div class="setting-item-wrapper">
                     <span>搜索</span>
-                    <n-switch @update:value="handleAccordionMenu" :value="defaultStore.accordionMenu">
+                    <n-switch @update:value="(value: boolean) => {
+                        handleActionBar(value, 'isShowSearch')
+                    }" :value="defaultStore.actionBar.isShowSearch">
                     </n-switch>
                 </div>
                 <div class="setting-item-wrapper">
                     <span>消息</span>
-                    <n-switch @update:value="handleAccordionMenu" :value="defaultStore.accordionMenu">
+                    <n-switch @update:value="(value: boolean) => {
+                        handleActionBar(value, 'isShowMessage')
+                    }" :value="defaultStore.actionBar.isShowMessage">
                     </n-switch>
                 </div>
                 <div class="setting-item-wrapper">
                     <span>刷新</span>
-                    <n-switch @update:value="handleAccordionMenu" :value="defaultStore.accordionMenu">
+                    <n-switch @update:value="(value: boolean) => {
+                        handleActionBar(value, 'isShowRefresh')
+                    }" :value="defaultStore.actionBar.isShowRefresh">
                     </n-switch>
                 </div>
                 <div class="setting-item-wrapper">
                     <span>全屏</span>
-                    <n-switch @update:value="handleAccordionMenu" :value="defaultStore.accordionMenu">
+                    <n-switch @update:value="(value: boolean) => {
+                        handleActionBar(value, 'isShowFullScreen')
+                    }" :value="defaultStore.actionBar.isShowFullScreen">
                     </n-switch>
                 </div>
             </div>
@@ -393,25 +465,34 @@ const handlePrimaryColor = (value: string) => {
                 <n-divider dashed>水印功能</n-divider>
                 <div class="setting-item-wrapper">
                     <span>开启水印</span>
-                    <n-switch @update:value="handleAccordionMenu" :value="defaultStore.accordionMenu">
+                    <n-switch @update:value="(value: boolean) => {
+                        handleDefaultSetting(value, 'isOpenWaterMark')
+                    }" :value="defaultStore.isOpenWaterMark">
                     </n-switch>
                 </div>
                 <div class="setting-item-wrapper">
                     <span>水印内容</span>
-                    <n-switch @update:value="handleAccordionMenu" :value="defaultStore.accordionMenu">
-                    </n-switch>
+                    <n-input v-model:value="defaultStore.waterMark" @update:value="(value: string) => {
+                        handleDefaultSetting(value, 'waterMark')
+                    }" type="text" placeholder="水印内容" />
                 </div>
             </div>
             <div>
                 <n-divider dashed>颜色模式</n-divider>
                 <div class="setting-item-wrapper">
                     <span>灰色模式</span>
-                    <n-switch @update:value="handleAccordionMenu" :value="defaultStore.accordionMenu">
+                    <n-switch @update:value="(value: boolean) => {
+                        handleDefaultSetting(value, 'isGray')
+                    }" :value="defaultStore.isGray">
                     </n-switch>
                 </div>
             </div>
         </n-drawer-content>
     </n-drawer>
+
+    <!-- 水印 -->
+    <n-watermark v-if="defaultStore.isOpenWaterMark" :content="defaultStore.waterMark" cross fullscreen :font-size="16"
+        :line-height="16" :width="384" :height="384" :x-offset="12" :y-offset="60" :rotate="-15" />
 </template>
 
 <style lang="less" scoped >
@@ -625,6 +706,7 @@ const handlePrimaryColor = (value: string) => {
     background-color: #03be32;
     text-align: center;
 }
+
 .circle::after {
     content: "";
     display: block;
@@ -635,13 +717,14 @@ const handlePrimaryColor = (value: string) => {
     background-color: #03be32;
     text-align: center;
 }
+
 .colorlist {
     cursor: pointer;
-        width: 30px;
-        height: 24px;
-        border-radius: 5px;
-        border: 1px solid #c1c1c1;
-        margin-bottom: 20px;
-        box-shadow: 0 2px 12px #0000001a;
+    width: 30px;
+    height: 24px;
+    border-radius: 5px;
+    border: 1px solid #c1c1c1;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 12px #0000001a;
 }
 </style>

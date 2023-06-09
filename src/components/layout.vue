@@ -2,7 +2,7 @@
  * @Author: anqiao 1102877041@qq.com
  * @Date: 2023-04-11 09:44:53
  * @LastEditors: anqiao 1102877041@qq.com
- * @LastEditTime: 2023-06-07 11:15:25
+ * @LastEditTime: 2023-06-08 16:57:00
  * @description: 
  * @FilePath: /AdminWork/src/components/layout.vue
 -->
@@ -257,7 +257,7 @@ const handleChangeMenuKeys=(key:string[])=>{
 
                             <n-dropdown trigger="hover" :options="ManagerList">
                                 <n-button text :focusable="false" @mouseenter="mouse(false)" @mouseleave='mouse(true)'>
-                                    <n-avatar round :size="28" src="../../src/assets/WechatIMG44.jpeg" />
+                                    <n-avatar round :size="28" src="/src/assets/WechatIMG44.jpeg" />
                                     <!-- <n-avatar round :size="28">
                                         <n-icon color="#0e7a0d">
                                             <SmileOutlined />
@@ -288,7 +288,7 @@ const handleChangeMenuKeys=(key:string[])=>{
                                         <MenuOutlined />
                                     </n-icon>
                                 </template>
-                                爱在西元前
+                                表格
                                 <n-icon class='close-icon-item'>
                                     <CloseCircleOutlined />
                                 </n-icon>
@@ -299,7 +299,7 @@ const handleChangeMenuKeys=(key:string[])=>{
                                         <MenuOutlined />
                                     </n-icon>
                                 </template>
-                                爱在西元前
+                                vxeTable
                                 <n-icon class='close-icon-item'>
                                     <CloseCircleOutlined />
                                 </n-icon>

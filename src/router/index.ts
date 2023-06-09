@@ -2,7 +2,7 @@
  * @Author: anqiao 1102877041@qq.com
  * @Date: 2023-04-11 09:31:34
  * @LastEditors: anqiao 1102877041@qq.com
- * @LastEditTime: 2023-06-05 15:47:44
+ * @LastEditTime: 2023-06-08 17:01:20
  * @description: 
  * @FilePath: /AdminWork/src/router/index.ts
  */
@@ -76,6 +76,29 @@ const routes: Array<RouteRecordRaw> = [
                             parentKey:'table'
                         },
                         component: () => import('../pages/Table/vxeTable.vue'),
+                    },
+                ]
+            },
+            {
+                path: 'form',
+                meta: {
+                    label: 'form页面',
+                    key: 'form',
+                    icon: 'FileTextOutlined',
+                },
+                children: [
+                    {
+                        path: 'useForm',
+                        name: 'useForm',
+                        meta: {
+                            label: 'form',
+                            key: 'useForm',
+                            name: 'useForm',
+                            path: '/form/useForm',
+                            icon: 'MenuOutlined',
+                            parentKey:'form'
+                        },
+                        component: () => import('../pages/Form/index.vue'),
                     },
                 ]
             },

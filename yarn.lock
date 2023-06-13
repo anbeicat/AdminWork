@@ -1667,10 +1667,10 @@ vueuc@^0.4.47:
     vdirs "^0.1.4"
     vooks "^0.2.4"
 
-vxe-table@^4.4.1:
-  version "4.4.1"
-  resolved "https://registry.npmjs.org/vxe-table/-/vxe-table-4.4.1.tgz"
-  integrity sha512-yq19+sds2Av625YiS3vpYjdXUN2BFTAyboOT+v5yhi6sroR7WwOnH7jkJ7/Q4U6ZhCDT59u0UOGAPVT27/4OWQ==
+vxe-table@^4.4.2-beta.8:
+  version "4.4.2-beta.8"
+  resolved "https://registry.npmjs.org/vxe-table/-/vxe-table-4.4.2-beta.8.tgz"
+  integrity sha512-34TWvldky9W1Rqme5X0HeM7u/wPtaECEzzQIx9WRm/3/sN/t5T/t/zHTwTa19wVmZUN5F/CWwMSVRSDXuUY7Hg==
 
 watchpack@^2.4.0:
   version "2.4.0"

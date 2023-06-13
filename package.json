@@ -19,7 +19,7 @@
     "terser": "^5.17.1",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6",
-    "vxe-table": "^4.4.1",
+    "vxe-table": "^4.4.2-beta.8",
     "xe-utils": "^3.5.10"
   },
   "devDependencies": {

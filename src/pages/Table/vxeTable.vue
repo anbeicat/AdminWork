@@ -2,14 +2,15 @@
  * @Author: anqiao 1102877041@qq.com
  * @Date: 2023-06-05 15:45:17
  * @LastEditors: anqiao 1102877041@qq.com
- * @LastEditTime: 2023-06-07 10:54:06
+ * @LastEditTime: 2023-06-13 14:58:28
  * @description: 
  * @FilePath: /AdminWork/src/pages/Table/vxeTable.vue
 -->
 <script setup lang="ts">
-import { ref, reactive, onBeforeMount, onMounted, h } from 'vue'
+import { ref, reactive, onBeforeMount, onMounted, h,computed } from 'vue'
 import { VxeGridProps, VxeTablePropTypes } from 'vxe-table'
-
+import { useDefaultStore } from "../../store/defaultSettings"
+const defaultStore = useDefaultStore()
 // data
 interface UserVO {
     id: number;
@@ -25,11 +26,11 @@ const gridOptions = reactive<VxeGridProps<UserVO>>({
     height: "400",
     rowConfig: {
         isHover: true,
-        isCurrent: true,
+        isCurrent: false,
     },
     columnConfig: { resizable: true },
     radioConfig: { labelField: 'role' },
-    checkboxConfig: { labelField: 'name', highlight: true, range: true },
+    checkboxConfig: { labelField: 'name', highlight: false, range: true },
     columns: [
         { type: 'seq', width: 50 },
         { type: 'checkbox', title: 'checkbox' },
@@ -61,6 +62,9 @@ const gridOptions = reactive<VxeGridProps<UserVO>>({
         { id: 10020, name: 'Test20', role: 'Develop', sex: '1', age: 41, address: 'test abc' }
     ]
 })
+// const dynamicVarSetting = computed(() => ({
+//   '--vxe-font-color': 'red'
+// }));
 </script>
 
 <template>

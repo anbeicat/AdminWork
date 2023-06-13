@@ -2,19 +2,22 @@
  * @Author: anqiao 1102877041@qq.com
  * @Date: 2023-03-02 11:23:52
  * @LastEditors: anqiao 1102877041@qq.com
- * @LastEditTime: 2023-06-07 11:14:00
+ * @LastEditTime: 2023-06-13 14:14:33
  * @description:
  * @FilePath: /AdminWork/src/main.ts
  */
 import { createApp } from 'vue'
-import VXETable from 'vxe-table'
 // 通用字体
 import 'vfonts/Lato.css'
 // 等宽字体
 import 'vfonts/FiraCode.css'
 import './style.less'
 import './theme/index.less';
+// import 'vxe-table/styles/index.scss';
 import App from './App.vue'
+import VXETable from 'vxe-table'
+import "vxe-table/lib/style.css";
+
 // 额外引入图标库
 import router from './router/index'
 import store from './store'

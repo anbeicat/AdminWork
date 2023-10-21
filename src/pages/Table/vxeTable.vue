@@ -2,7 +2,7 @@
  * @Author: anqiao 1102877041@qq.com
  * @Date: 2023-06-05 15:45:17
  * @LastEditors: anqiao 1102877041@qq.com
- * @LastEditTime: 2023-06-13 14:58:28
+ * @LastEditTime: 2023-06-13 16:07:32
  * @description: 
  * @FilePath: /AdminWork/src/pages/Table/vxeTable.vue
 -->
@@ -23,7 +23,7 @@ interface UserVO {
 const gridOptions = reactive<VxeGridProps<UserVO>>({
     border: true,
     stripe: true,
-    height: "400",
+    height: '100%',
     rowConfig: {
         isHover: true,
         isCurrent: false,
@@ -31,6 +31,12 @@ const gridOptions = reactive<VxeGridProps<UserVO>>({
     columnConfig: { resizable: true },
     radioConfig: { labelField: 'role' },
     checkboxConfig: { labelField: 'name', highlight: false, range: true },
+    toolbarConfig: {
+    perfect: true,
+    refresh: false,
+    zoom: true,
+    custom: true,
+  },
     columns: [
         { type: 'seq', width: 50 },
         { type: 'checkbox', title: 'checkbox' },

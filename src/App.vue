@@ -2,7 +2,7 @@
  * @Author: anqiao 1102877041@qq.com
  * @Date: 2023-03-31 17:07:58
  * @LastEditors: anqiao 1102877041@qq.com
- * @LastEditTime: 2023-06-13 14:56:01
+ * @LastEditTime: 2023-06-13 15:52:13
  * @description: 
  * @FilePath: /AdminWork/src/App.vue
 -->
@@ -24,13 +24,15 @@ const themeOverrides = computed(() => {
 })
 const dynamicVarSetting = computed(() => ({
   '--vxe-primary-color':  defaultStore.primaryColor,
-  // '--vxe-primary-lighten-color':  defaultStore.primaryColor,
+  '--vxe-primary-lighten-color':  defaultStore.primaryColor,
+  '--vxe-primary-darken-color':  defaultStore.primaryColor,
   '--vxe-table-row-checkbox-checked-background-color':  'rgb(243, 243, 245)',
   '--vxe-table-row-hover-background-color':  'rgb(243, 243, 245)',
   '--vxe-table-row-hover-striped-background-color':  'rgb(243, 243, 245)',
   '--vxe-table-column-current-background-color':defaultStore.primaryColor,
   '--vxe-table-row-hover-current-background-color':'',
-  '--vxe-table-row-current-background-color':''
+  '--vxe-table-row-current-background-color':'',
+  'vxe-table-column-hover-background-color':defaultStore.primaryColor,
 }));
 </script>
 
